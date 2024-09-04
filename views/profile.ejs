@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <header>
+        <h1>Perfil</h1>
+        <nav>
+            <ul>
+                <li><a href="/profile">Perfil</a></li>
+                <li><a href="/loans">Préstamos</a></li>
+                <li><a href="/returns">Devoluciones</a></li>
+                <li><a href="/my-qr">Mi QR</a></li>
+                <li><a href="/recommendations">Recomendaciones</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="profile-info">
+            <p><strong>Nombre de usuario:</strong> <%= user.username %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+            <p><strong>Foto de perfil:</strong></p>
+            <% if (user.profile_photo) { %>
+                <img src="/<%= user.profile_photo %>" alt="Foto de perfil" style="width: 150px; height: 150px;">
+            <% } else { %>
+                <p>No has subido una foto de perfil.</p>
+            <% } %>
+        </div>
+        
+        <h3>Actualizar foto de perfil</h3>
+        <form action="/users/profile/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="profilePhoto" accept="image/*" required>
+            <button type="submit">Subir foto</button>
+        </form>
+        
+        <p><a href="/">Volver a la página principal</a></p>
+    </main>
+</body>
+</html>

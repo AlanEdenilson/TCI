@@ -1,15 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const mysql = require('mysql2');
+const bcrypt = require('bcrypt');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Rutas
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
-// view engine setup
+// Configuracion del motor de plantillas
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -19,10 +23,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Configuración de sesiones
+app.use(session({
+  secret: 'mi_secreto',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
-// catch 404 and forward to error handler
+ // usar las rutas 
+ app.use('/', indexRouter);
+ app.use('/users', usersRouter);
+
+// manejo de errores
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -37,5 +50,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+// En tu archivo de rutas o controlador en Express
+app.post('/procesar-codigo', (req, res) => {
+  const codigo = req.body.codigo;
+  // Procesar el código recibido
+  res.send(`Código recibido: ${codigo}`);
+});
+
 
 module.exports = app;

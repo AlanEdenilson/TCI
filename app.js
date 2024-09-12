@@ -57,5 +57,7 @@ app.post('/procesar-codigo', (req, res) => {
   res.send(`Código recibido: ${codigo}`);
 });
 
+app.use(express.static('public'));
+
 
 module.exports = app;

@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Préstamos</title>
-    <script src="https://cdn.jsdelivr.net/npm/instascan@1.0.0/build/instascan.min.js"></script>
-
     <link rel="stylesheet" href="/stylesheets/style.css">
     
 </head>
@@ -23,35 +21,50 @@
             </ul>
         </nav>
     </header>
-    
-        <h2>Préstamos</h2>
-        <!-- Agrega un contenedor para el escáner -->
-<div id="qr-reader" style="width: 300px; height: 300px;"></div>
-<button id="start-camera">Iniciar Cámara</button>
+    <!-- Video para mostrar la cámara -->
+<video id="video" width="300" height="300" autoplay></video>
+<canvas id="canvas" style="display:none;"></canvas>
+<button id="startScan">Escanear QR</button>
 
+<!-- Incluye el script de jsQR -->
+<script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+<script>
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const canvasContext = canvas.getContext('2d');
+  
+  // Obtener acceso a la cámara
+  function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(function (stream) {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(function (err) {
+        console.log("Error al acceder a la cámara: " + err);
+      });
+  }
 
-     
-        <script>
-            document.getElementById('start-camera').addEventListener('click', function() {
-    const qrCodeReader = new Html5Qrcode("qr-reader");
+  // Función para escanear código QR
+  function scanQRCode() {
+    canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+    const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
 
-    // Define los parámetros del escáner
-    const config = { fps: 10, qrbox: 250 };
+    if (qrCode) {
+      console.log("Código QR detectado:", qrCode.data);
+    } else {
+      requestAnimationFrame(scanQRCode); // Continuar escaneando si no se ha detectado
+    }
+  }
 
-    // Inicia la cámara
-    qrCodeReader.start({ facingMode: "environment" }, config, (decodedText, decodedResult) => {
-        // Maneja el texto escaneado
-        console.log(`Código QR detectado: ${decodedText}`);
-        qrCodeReader.stop().catch((err) => {
-            console.error(`Error al detener el escáner: ${err}`);
-        });
-    }).catch((err) => {
-        console.error(`Error al iniciar el escáner: ${err}`);
-    });
-});
+  document.getElementById("startScan").addEventListener("click", function() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    scanQRCode();
+  });
 
-        </script>
-        
-    
+  startCamera();
+</script>  
 </body>
 </html>

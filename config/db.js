@@ -1,13 +1,14 @@
-// config/db.js
 const mysql = require('mysql2/promise');
 
 // Crear una conexión a la base de datos
-const connection = mysql.createPool({
+const db = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'tci'
+  database: 'taller'
 });
 
-module.exports = connection;
+// Exportar la conexión
+module.exports = db;
+
 

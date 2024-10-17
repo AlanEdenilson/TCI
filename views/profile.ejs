@@ -1,10 +1,12 @@
+<!-- views/profile.ejs -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+    <title>Perfil de Usuario</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
 </head>
 <body>
     <header>
@@ -20,25 +22,106 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <div class="profile-info">
-            <p><strong>Nombre de usuario:</strong> <%= user.username %></p>
-            <p><strong>Email:</strong> <%= user.email %></p>
-            <p><strong>Foto de perfil:</strong></p>
-            <% if (user.profile_photo) { %>
-                <img src="/<%= user.profile_photo %>" alt="Foto de perfil" style="width: 150px; height: 150px;">
-            <% } else { %>
-                <p>No has subido una foto de perfil.</p>
-            <% } %>
+
+    <h1>Perfil de Usuario</h1>
+    <div class="profile-pic-container">
+        <img src="/path/to/your/profile-pic.jpg" alt="Foto de perfil" class="profile-pic" id="profile-pic">
+        <label for="upload-pic">
+            <input type="file" id="upload-pic" accept="image/*" onchange="changeProfilePic(event)">
+            <span>📷</span>
+        </label>
+    </div>
+    <form id="profileForm" action="/users/perfil" method="POST">
+        <h1>Perfil</h1>
+    
+        <div class="form-group">
+            <label for="name">Nombre Completo:</label>
+            <input type="text" id="name" name="nombre" required disabled>
         </div>
-        
-        <h3>Actualizar foto de perfil</h3>
-        <form action="/users/profile/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="profilePhoto" accept="image/*" required>
-            <button type="submit">Subir foto</button>
-        </form>
-        
-        <p><a href="/">Volver a la página principal</a></p>
-    </main>
+    
+        <div class="form-group">
+            <label for="gmail">Gmail:</label>
+            <input type="email" id="gmail" name="email" required disabled>
+        </div>
+    
+        <div class="form-group">
+            <label for="nie">NIE:</label>
+            <input type="text" id="nie" name="nie" required disabled>
+        </div>
+    
+        <div class="form-group">
+            <label for="specialty">Especialidad:</label>
+            <input type="text" id="specialty" name="especialidad" required disabled>
+        </div>
+    
+        <div class="form-group">
+            <label for="year">Año de Bachillerato:</label>
+            <input type="number" id="year" name="ano" required disabled>
+        </div>
+    
+        <button type="button" id="editButton" onclick="enableEdit()">Editar Perfil</button>
+        <button type="submit" id="saveButton">Guardar</button>
+    </form>
+    
+    </div>
+
+    <script>
+        function changeProfilePic(event) {
+        const file = event.target.files[0]; // Obtener el archivo seleccionado
+        if (file) {
+            const reader = new FileReader(); // Crear un FileReader para leer el archivo
+            reader.onload = function(e) {
+                // Establecer la imagen de perfil con la URL del archivo cargado
+                document.getElementById('profile-pic').src = e.target.result;
+            }
+            reader.readAsDataURL(file); // Leer el archivo como una URL de datos
+        }
+    }
+
+
+        function enableEdit() {
+            // Habilitar los campos para edición
+            document.getElementById("name").disabled = false;
+            document.getElementById("gmail").disabled = false;
+            document.getElementById("nie").disabled = false;
+            document.getElementById("specialty").disabled = false;
+            document.getElementById("year").disabled = false;
+
+            // Habilitar el botón de guardar
+            document.getElementById("saveButton").disabled = false;
+
+            // Deshabilitar el botón de edición
+            document.getElementById("editButton").disabled = true;
+        }
+
+        document.getElementById("profileForm").onsubmit = function() {
+            // Habilitar los campos para que sus valores se envíen
+            document.getElementById("name").disabled = false;
+            document.getElementById("gmail").disabled = false;
+            document.getElementById("nie").disabled = false;
+            document.getElementById("specialty").disabled = false;
+            document.getElementById("year").disabled = false;
+
+            // Almacenar los datos en sessionStorage antes de enviar el formulario
+            sessionStorage.setItem('nombre', document.getElementById("name").value);
+            sessionStorage.setItem('email', document.getElementById("gmail").value);
+            sessionStorage.setItem('nie', document.getElementById("nie").value);
+            sessionStorage.setItem('especialidad', document.getElementById("specialty").value);
+            sessionStorage.setItem('ano', document.getElementById("year").value);
+        }
+
+        window.onload = function() {
+            // Deshabilitar los campos al cargar la página
+            document.getElementById("name").disabled = true;
+            document.getElementById("gmail").disabled = true;
+            document.getElementById("nie").disabled = true;
+            document.getElementById("specialty").disabled = true;
+            document.getElementById("year").disabled = true;
+        }
+    </script>
 </body>
 </html>
+
+
+
+

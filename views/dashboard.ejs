@@ -1,28 +1,65 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/menu.css">
+    
 </head>
 <body>
     <header>
-        <h1>Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="/profile">Perfil</a></li>
-                <li><a href="/loans">Préstamos</a></li>
-                <li><a href="/returns">Devoluciones</a></li>
-                <li><a href="/my-qr">Mi QR</a></li>
-                <li><a href="/recommendations">Recomendaciones</a></li>
-                <li><a href="/logout">Cerrar sesión</a></li>
-            </ul>
-        </nav>
+        <div class="header-content">
+            <div class="text-section">
+                <h1> TECHBOX </h1>
+                <p></p>
+            </div>
+            <div class="image-section">
+                <img src="/iconos/logo.png" alt="Meditation Image">
+            </div>
+        </div>
     </header>
+
     <main>
-        <h2>Bienvenido, <%= username %></h2>
-        <!-- Aquí puedes agregar contenido específico del dashboard -->
+        <div class="grid-container">
+            <div class="grid-item">
+                <a href="/profile">
+                    <img src="/iconos/perfil.svg" alt="Perfil">
+                    <p>Perfil</p>
+                </a>
+            </div>
+            <div class="grid-item">
+                <a href="/loans">
+                    <img src="/iconos/presta.svg" alt="Préstamos">
+                    <p>Préstamos</p>
+                </a>
+            </div>
+            <div class="grid-item">
+                <a href="/returns">
+                    <img src="/iconos/devolucion.svg" alt="Devoluciones">
+                    <p>Devoluciones</p>
+                </a>
+            </div>
+            <div class="grid-item">
+                <a href="/my-qr">
+                    <img src="/iconos/qr.svg" alt="Mi QR">
+                    <p>Mi QR</p>
+                </a>
+            </div>
+            <div class="grid-item">
+                <a href="/recommendations">
+                    <img src="/iconos/recomendacion.svg" alt="Recomendaciones">
+                    <p>Recomendaciones</p>
+                </a>
+            </div>
+            <div class="grid-item">
+                <a href="/logout">
+                    <img src="/iconos/cerrar.svg" alt="Cerrar sesión">
+                    <p>Cerrar sesión</p>
+                </a>
+            </div>
+        </div>
     </main>
 </body>
 </html>

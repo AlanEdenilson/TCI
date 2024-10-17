@@ -1,0 +1,121 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #58606D; 
+    background-size: cover; 
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    background-color: transparent;
+    color: #021730;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+header .logo {
+    position: absolute;
+    left: 20px;
+    max-width: 60px;
+}
+
+header h1 {
+    font-size: 24px;
+    border-bottom: 2px solid #F9CD16;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+h2 {
+    margin-top: 20px;
+    text-align: center;
+    color: #021730; 
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 400px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.form-group {
+    margin-bottom: 20px; 
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    color: white; 
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 7px;
+    background-color: #58606D;
+    color: white; 
+}
+
+input::placeholder {
+    color: #b3b3b3;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #b3b3b3; 
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #b3b3b3; 
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+    color: #021730; 
+}
+
+a {
+    color: #021730; 
+    text-decoration: none; 
+}
+
+a:hover {
+    text-decoration: underline; 
+}
+
+footer {
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+}
+
+footer p {
+    margin: 0;
+}

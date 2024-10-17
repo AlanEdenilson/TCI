@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Préstamos</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
-    
+    <link rel="stylesheet" href="/stylesheets/loans.css">
 </head>
 <body>
     <header>
@@ -21,50 +21,164 @@
             </ul>
         </nav>
     </header>
+
     <!-- Video para mostrar la cámara -->
-<video id="video" width="300" height="300" autoplay></video>
-<canvas id="canvas" style="display:none;"></canvas>
-<button id="startScan">Escanear QR</button>
+    <video id="video" width="300" height="300" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <button id="startScan">Escanear QR</button>
 
-<!-- Incluye el script de jsQR -->
-<script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
-<script>
-  const video = document.getElementById('video');
-  const canvas = document.getElementById('canvas');
-  const canvasContext = canvas.getContext('2d');
-  
-  // Obtener acceso a la cámara
-  function startCamera() {
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-      .then(function (stream) {
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch(function (err) {
-        console.log("Error al acceder a la cámara: " + err);
-      });
-  }
+    <!-- Formulario para la información de la herramienta -->
+    <form id="loanForm">
+        <!-- Campos de la herramienta escaneada -->
+        <label for="toolName">Nombre de la herramienta:</label>
+        <input type="text" id="toolName" name="toolName" readonly><br><br>
 
-  // Función para escanear código QR
-  function scanQRCode() {
-    canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
-    const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+        <label for="toolType">Tipo de herramienta:</label>
+        <input type="text" id="toolType" name="toolType" readonly><br><br>
 
-    if (qrCode) {
-      console.log("Código QR detectado:", qrCode.data);
-    } else {
-      requestAnimationFrame(scanQRCode); // Continuar escaneando si no se ha detectado
-    }
-  }
+        <label for="toolStatus">Estado de la herramienta:</label>
+        <input type="text" id="toolStatus" name="toolStatus" readonly><br><br>
 
-  document.getElementById("startScan").addEventListener("click", function() {
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    scanQRCode();
-  });
+        <label for="date">Fecha:</label>
+        <input type="text" id="date" name="date" readonly><br><br>
 
-  startCamera();
-</script>  
+        <label for="time">Hora:</label>
+        <input type="text" id="time" name="time" readonly><br><br>
+
+        <label for="nombre">Nombre Completo:</label>
+        <input type="text" id="nombre" name="nombre" readonly><br><br>
+
+        <label for="email">Gmail:</label>
+        <input type="email" id="email" name="email" readonly><br><br>
+        
+        <label for="nie">NIE:</label>
+        <input type="text" id="nie" name="nie" readonly><br><br>
+        
+        <label for="especialidad">Especialidad:</label>
+        <input type="text" id="especialidad" name="especialidad" readonly><br><br>
+        
+        <label for="ano">Año de Bachillerato:</label>
+        <input type="text" id="ano" name="ano" readonly><br><br>
+
+        <!-- Botón para enviar los datos -->
+        <input type="button" value="Enviar" id="submitForm">
+    </form>
+
+    <!-- Incluye el script de jsQR -->
+    <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const canvasContext = canvas.getContext('2d');
+
+        const toolNameInput = document.getElementById('toolName');
+        const toolTypeInput = document.getElementById('toolType');
+        const toolStatusInput = document.getElementById('toolStatus');
+        const dateInput = document.getElementById('date');
+        const timeInput = document.getElementById('time');
+
+        // Obtener los datos del usuario del perfil
+        document.getElementById('nombre').value = sessionStorage.getItem('nombre') || '';
+        document.getElementById('email').value = sessionStorage.getItem('email') || '';
+        document.getElementById('nie').value = sessionStorage.getItem('nie') || '';
+        document.getElementById('especialidad').value = sessionStorage.getItem('especialidad') || '';
+        document.getElementById('ano').value = sessionStorage.getItem('ano') || '';
+
+        
+      
+        // Obtener acceso a la cámara
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function (err) {
+                    console.log("Error al acceder a la cámara: " + err);
+                });
+        }
+
+        // Función para escanear código QR
+        function scanQRCode() {
+            canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+            const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+
+            if (qrCode) {
+                const qrData = JSON.parse(qrCode.data); // Asume que el QR contiene un JSON con los datos
+
+                // Rellenar los campos con la información del QR
+                toolNameInput.value = qrData.toolName || "Desconocido";
+                toolTypeInput.value = qrData.toolType || "Desconocido";
+                toolStatusInput.value = qrData.toolStatus || "Desconocido";
+
+                // Rellenar la fecha y la hora actuales
+                const now = new Date();
+                dateInput.value = now.toLocaleDateString();
+                timeInput.value = now.toLocaleTimeString();
+
+            } else {
+                requestAnimationFrame(scanQRCode); // Continuar escaneando si no se ha detectado
+            }
+        }
+
+        document.getElementById("startScan").addEventListener("click", function() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            scanQRCode();
+        });
+
+        startCamera();
+
+        document.getElementById("submitForm").addEventListener("click", function() {
+    const formData = {
+        toolName: toolNameInput.value,
+        toolType: toolTypeInput.value,
+        toolStatus: toolStatusInput.value,
+        date: dateInput.value,
+        time: timeInput.value,
+        nombre: document.getElementById('nombre').value,
+        email: document.getElementById('email').value,
+        nie: document.getElementById('nie').value,
+        especialidad: document.getElementById('especialidad').value,
+        ano: document.getElementById('ano').value
+    };
+
+    // Enviar datos al endpoint de préstamos
+    fetch('http://localhost:3000/taller', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Datos enviados:', data);
+
+        // Guardar datos en el sessionStorage
+        sessionStorage.setItem('returnToolName', formData.toolName);
+        sessionStorage.setItem('returnToolType', formData.toolType);
+        sessionStorage.setItem('returnToolStatus', formData.toolStatus);
+        sessionStorage.setItem('returnDate', formData.date);
+        sessionStorage.setItem('returnTime', formData.time);
+        sessionStorage.setItem('returnNombre', formData.nombre);
+        sessionStorage.setItem('returnEmail', formData.email);
+        sessionStorage.setItem('returnNie', formData.nie);
+        sessionStorage.setItem('returnEspecialidad', formData.especialidad);
+        sessionStorage.setItem('returnAno', formData.ano);
+
+        // Redirigir a la vista de devoluciones
+        window.location.href = '/returns';
+    })
+    .catch((error) => {
+        console.error('Error al enviar los datos:', error);
+    });
+});
+
+
+
+           
+    </script>
 </body>
 </html>

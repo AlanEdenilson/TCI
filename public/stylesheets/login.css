@@ -1,0 +1,120 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #58606D;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+header {
+    background-color: transparent;
+    color: #021730;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+header .logo {
+    position: absolute;
+    left: 20px;
+    max-width: 60px;
+}
+
+header h1 {
+    font-size: 24px;
+    border-bottom: 2px solid #F9CD16;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    max-width: 400px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.login-container h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #021730;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    font-size: 15px;
+    color: white;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #58606D;
+    color: white;
+}
+
+input::placeholder {
+    color: #b3b3b3;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ccc;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #bbb;
+}
+
+.login-container p {
+    font-size: 15px;
+    color: #021730;
+}
+
+.login-container a {
+    color: #021730;
+    text-decoration: none;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+
+footer {
+    background-color: transparent;
+    color: #021730;
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+}
+
+footer p {
+    margin: 0;
+}

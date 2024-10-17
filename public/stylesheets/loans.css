@@ -1,0 +1,123 @@
+/* Estilo general del body */
+body {
+    background-color: #B3B3B3;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.container {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+}
+
+/* Estilo del header */
+header {
+    margin-bottom: 30px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Estilo del título principal */
+h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Estilo del video */
+#video {
+    border-radius: 10px;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    background-color: #E0E0E0;
+}
+
+/* Estilo de las etiquetas */
+label {
+    font-size: 16px;
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+/* Estilo de los campos de entrada */
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #021730;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #021730;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+    border-color: #F9CD16;
+    background-color: #FFF8DC;
+}
+
+/* Estilo de los botones */
+button,
+input[type="button"] {
+    background-color: #021730;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 45%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 15px;
+}
+
+button:hover,
+input[type="button"]:hover {
+    background-color: #F9CD16;
+    color: #021730;
+    transform: scale(1.02);
+}
+
+/* Contenedor de botones */
+.button-container {
+    display: flex;
+    justify-content: center; /* Centrar el botón */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.button-container input[type="button"] {
+    width: 100%; /* Ajusta el ancho del botón al 100% del contenedor */
+    max-width: 300px; /* Opcional: establece un ancho máximo para el botón */
+}
+
+
+/* Mejoras de accesibilidad y legibilidad */
+input[readonly] {
+    background-color: #D3D3D3;
+    color: #58606D;
+}

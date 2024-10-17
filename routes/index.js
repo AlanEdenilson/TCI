@@ -13,75 +13,73 @@ router.get('/register', function(req, res) {
   res.render('register', { title: 'Registro' });
 });
 
- // Ruta para mostrar el dashboard
+// Ruta para mostrar el dashboard
 router.get('/dashboard', (req, res) => {
   if (req.session.loggedin) {
-      res.render('dashboard', { username: req.session.username });
+    res.render('dashboard', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
 });
 
 // Ruta para cerrar sesión
 router.get('/logout', (req, res) => {
   req.session.destroy(err => {
-      if (err) {
-          return res.redirect('/dashboard');
-      }
-      res.redirect('/');
+    if (err) {
+      return res.redirect('/dashboard');
+    }
+    res.redirect('/');
   });
 });
 
-// Ruta para préstamos
+
+// Ruta para perfil
 router.get('/profile', (req, res) => {
   if (req.session.loggedin) {
-      res.render('profile', { username: req.session.username });
+    res.render('profile', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
-});
+
+
+
+  });
+ 
 
 // Ruta para préstamos
 router.get('/loans', (req, res) => {
   if (req.session.loggedin) {
-      res.render('loans', { username: req.session.username });
+    res.render('loans', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
 });
 
 // Ruta para devoluciones
 router.get('/returns', (req, res) => {
   if (req.session.loggedin) {
-      res.render('returns', { username: req.session.username });
+    res.render('returns', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
 });
 
 // Ruta para mi QR
 router.get('/my-qr', (req, res) => {
   if (req.session.loggedin) {
-      res.render('my-qr', { username: req.session.username });
+    res.render('my-qr', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
 });
 
 // Ruta para recomendaciones
 router.get('/recommendations', (req, res) => {
   if (req.session.loggedin) {
-      res.render('recommendations', { username: req.session.username });
+    res.render('recommendations', { username: req.session.username });
   } else {
-      res.redirect('/');
+    res.redirect('/');
   }
 });
-
-// Ruta de logout
-router.get('/logout', function (req, res) {
-  req.session.destroy();
-  res.redirect('/');
-});
-
 
 module.exports = router;

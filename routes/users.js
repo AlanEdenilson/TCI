@@ -13,7 +13,7 @@ router.post('/register', async (req, res) => {
 
   try {
     // Verificar si el usuario ya existe
-    const [existingUser] = await db.query('SELECT * FROM registrar WHERE Email = ? OR Nombre= ? ', [ email,Nombre]);
+    const [existingUser] = await db.query('SELECT * FROM registrar WHERE Email = ? OR Nombre= ? ', [ Email,Nombre]);
 
     if (existingUser.length > 0) {
       return res.status(400).send('El nombre de usuario o el correo electrónico ya están en uso');

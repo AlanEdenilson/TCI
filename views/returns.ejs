@@ -33,13 +33,53 @@
  
         <label for="returnNie">NIE:</label>
        
-        <input type="number" id="returnNie" name="returnNie" ><br><br>
+        <input type="number" id="returnNie" name="returnNie" readonly ><br><br>
         
 
         <label for="returnComentario">Comentario/Reporte:</label>
         <textarea id="returnComentario" name="returnComentario" rows="5" cols="33"></textarea><br><br>
         <button type="submit" value="Enviar datos de devolución" id="submitReturnForm"> Enviar</button>
     </form>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+       $(function(){
+        $.ajax({
+                url: '/taller/buscarprestamos',
+                type: 'GET',
+                success: function(data) {
+                // La petición fue exitosa
+                console.log(data)
+                $('#returnNie').val(data.nie)
+                
+
+                },
+                error: function(xhr, status, error) {
+                // Hubo un error en la petición
+                console.error(xhr.statusText);
+                }
+            });
+
+
+        $.ajax({
+                url: '/taller/buscarestudiante',
+                type: 'GET',
+                success: function(data) {
+                // La petición fue exitosa
+                console.log(data)
+                $('#returnNie').val(data.nie)
+                
+
+                },
+                error: function(xhr, status, error) {
+                // Hubo un error en la petición
+                console.error(xhr.statusText);
+                }
+            });
+
+       })
+
+    </script>
+
     <script>
 
 // window.addEventListener('DOMContentLoaded', function() {

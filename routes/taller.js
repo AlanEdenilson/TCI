@@ -34,5 +34,7 @@ router.get('/returns',(req,res)=>{
 
 router.post('/devolver',controll.devolver)
 
+router.get('/buscarprestamos',controll.buscarprestamos )
+
 
 module.exports=router;

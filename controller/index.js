@@ -152,6 +152,27 @@ module.exports={
         console.log(req.body)
    
         
+    },
+    buscarprestamos:async function(req,res) {
+      var {id} = req.cookies.username
+      try {
+        const query =`
+         SELECT 
+        h.nombre AS nombre_herramienta,
+        p.id
+
+        FROM  prestamos p 
+        INNER JOIN herramientas h ON h.id = p.herramienta_id
+        WHERE p.perfil_estudiante_id = ?
+        `
+        const [rows] = await pool.query(query,[id]);
+          console.log(rows[0]);
+          res.send(rows[0])
+
+      } catch (error) {
+        
+        console.error(error)
+      }
     }
 
 }

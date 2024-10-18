@@ -43,7 +43,7 @@ module.exports={
         }
         
     },
-    insertperfil:async function (req,res) {
+    insertperfil: async function (req,res) {
          var {id} = req.cookies.username
          console.log(id)
 
@@ -70,7 +70,61 @@ module.exports={
             throw new Error(`Error al actualizar perfil: ${error.message}`);
         }
         
-    }
+    },
+    buscarEstudent_p: async function(req,res){
+        var {id} = req.cookies.username
 
+        try {
+            const query = 'SELECT * FROM perfil_estudiante WHERE id = ? ';
+            const [rows] = await pool.query(query, [id]);
+            console.log(rows[0]);
+          if (rows[0]){
+            res.send(rows[0])
+          }
+          else{
+            res.send('no se encontro al estudiante')
+          }
+            // Retorna el primer resultado o undefined
+        } catch (error) {
+            throw new Error(`Error al buscar estudiante: ${error}`);
+        }
+
+        
+    },
+    buscarTool:async function(req,res) {
+        console.log(req.query.toolName)
+       
+
+        try {
+            const query = `
+                SELECT 
+                    h.id,
+                    h.nombre AS nombre_herramienta,
+                    h.estado,
+                    t.nombre AS nombre_tipo,
+                    t.cantidad
+                FROM herramientas h
+                INNER JOIN tipo t ON h.id_tipo = t.id_tipo
+                WHERE h.nombre = ?`;
+            
+            const [rows] = await pool.query(query,[req.query.toolName]);
+            console.log(rows[0]);
+          if (rows[0]){
+            res.send(rows[0])
+          }
+          else{
+            res.send('no se encontro al estudiante')
+          }
+            // Retorna el primer resultado o undefined
+        } catch (error) {
+            throw new Error(`Error al buscar estudiante: ${error}`);
+        }
+
+        
+    },
+    insertar_presta: async function (req,res) {
+        console.log(req.body)
+        
+    }
 
 }

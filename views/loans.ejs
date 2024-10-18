@@ -6,6 +6,7 @@
     <title>Préstamos</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/stylesheets/loans.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
     <header>
@@ -23,12 +24,26 @@
     </header>
 
     <!-- Video para mostrar la cámara -->
-    <video id="video" width="300" height="300" autoplay></video>
-    <canvas id="canvas" style="display:none;"></canvas>
-    <button id="startScan">Escanear QR</button>
+    <!-- <video id="video" width="300" height="300" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas> -->
+
+        <div id="qr-result"></div>
+
+        <div class="container">
+            <h1>Escáner de Código QR</h1>
+            <div id="reader"></div>
+            <div class="button-container">
+                <button id="start-button" class="scan-button">Iniciar Escaneo</button>
+                <button id="stop-button" class="scan-button" style="display: none;">Detener Escaneo</button>
+            </div>
+            <div id="qr-result"></div>
+        </div>
+              
+    <!-- <button id="startScan">Escanear QR</button> -->
 
     <!-- Formulario para la información de la herramienta -->
-    <form id="loanForm">
+    <form id="loanForm" action="/taller/insertarPresta" method="post">
+        <input type="text" id="id" name="id"   readonly><br><br>
         <!-- Campos de la herramienta escaneada -->
         <label for="toolName">Nombre de la herramienta:</label>
         <input type="text" id="toolName" name="toolName" readonly><br><br>
@@ -38,12 +53,6 @@
 
         <label for="toolStatus">Estado de la herramienta:</label>
         <input type="text" id="toolStatus" name="toolStatus" readonly><br><br>
-
-        <label for="date">Fecha:</label>
-        <input type="text" id="date" name="date" readonly><br><br>
-
-        <label for="time">Hora:</label>
-        <input type="text" id="time" name="time" readonly><br><br>
 
         <label for="nombre">Nombre Completo:</label>
         <input type="text" id="nombre" name="nombre" readonly><br><br>
@@ -57,128 +66,271 @@
         <label for="especialidad">Especialidad:</label>
         <input type="text" id="especialidad" name="especialidad" readonly><br><br>
         
-        <label for="ano">Año de Bachillerato:</label>
-        <input type="text" id="ano" name="ano" readonly><br><br>
+        <!-- <label for="ano">Año de Bachillerato:</label>
+        <input type="text" id="ano" name="ano" readonly><br><br> -->
 
         <!-- Botón para enviar los datos -->
-        <input type="button" value="Enviar" id="submitForm">
+        <input type="submit"  id="submitForm">
     </form>
 
+</script>
     <!-- Incluye el script de jsQR -->
-    <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+     <script>
+        $(function() {
+            console.log('buscando estudiante')
+            $.ajax({
+                url: '/taller/buscarestudiante',
+                type: 'GET',
+                success: function(data) {
+                // La petición fue exitosa
+                console.log(data)
+                $('#nombre').val(`${data.apellido} ${data.nombre}`)
+                $('#email').val(`${data.correo}`)
+                $('#nie').val(`${data.nie} `)
+                $('#especialidad').val(`${data.especialidad}`)
+
+                },
+                error: function(xhr, status, error) {
+                // Hubo un error en la petición
+                console.error(xhr.statusText);
+                }
+            });
+
+            // Obtener los datos de la herramienta escaneada
+            
+    
+            
+        })
+     </script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"></script>
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const canvasContext = canvas.getContext('2d');
+//         const video = document.getElementById('video');
+//         const canvas = document.getElementById('canvas');
+//         const canvasContext = canvas.getContext('2d');
 
-        const toolNameInput = document.getElementById('toolName');
-        const toolTypeInput = document.getElementById('toolType');
-        const toolStatusInput = document.getElementById('toolStatus');
-        const dateInput = document.getElementById('date');
-        const timeInput = document.getElementById('time');
+//         const toolNameInput = document.getElementById('toolName');
+//         const toolTypeInput = document.getElementById('toolType');
+//         const toolStatusInput = document.getElementById('toolStatus');
+//         const dateInput = document.getElementById('date');
+//         const timeInput = document.getElementById('time');
 
-        // Obtener los datos del usuario del perfil
-        document.getElementById('nombre').value = sessionStorage.getItem('nombre') || '';
-        document.getElementById('email').value = sessionStorage.getItem('email') || '';
-        document.getElementById('nie').value = sessionStorage.getItem('nie') || '';
-        document.getElementById('especialidad').value = sessionStorage.getItem('especialidad') || '';
-        document.getElementById('ano').value = sessionStorage.getItem('ano') || '';
+//         // Obtener los datos del usuario del perfil
+//         document.getElementById('nombre').value = sessionStorage.getItem('nombre') || '';
+//         document.getElementById('email').value = sessionStorage.getItem('email') || '';
+//         document.getElementById('nie').value = sessionStorage.getItem('nie') || '';
+//         document.getElementById('especialidad').value = sessionStorage.getItem('especialidad') || '';
+//         document.getElementById('ano').value = sessionStorage.getItem('ano') || '';
 
         
       
-        // Obtener acceso a la cámara
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function (err) {
-                    console.log("Error al acceder a la cámara: " + err);
-                });
-        }
+//         // Obtener acceso a la cámara
+//         function startCamera() {
+//             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+//                 .then(function (stream) {
+//                     video.srcObject = stream;
+//                     video.play();
+//                 })
+//                 .catch(function (err) {
+//                     console.log("Error al acceder a la cámara: " + err);
+//                 });
+//         }
 
-        // Función para escanear código QR
-        function scanQRCode() {
-            canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
-            const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+//         // Función para escanear código QR
+//         function scanQRCode() {
+//             canvasContext.drawImage(video, 0, 0, canvas.width, canvas.height);
+//             const imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
+//             const qrCode = jsQR(imageData.data, canvas.width, canvas.height);
 
-            if (qrCode) {
-                const qrData = JSON.parse(qrCode.data); // Asume que el QR contiene un JSON con los datos
+//             if (qrCode) {
+//                 const qrData = JSON.parse(qrCode.data); // Asume que el QR contiene un JSON con los datos
 
-                // Rellenar los campos con la información del QR
-                toolNameInput.value = qrData.toolName || "Desconocido";
-                toolTypeInput.value = qrData.toolType || "Desconocido";
-                toolStatusInput.value = qrData.toolStatus || "Desconocido";
+//                 // Rellenar los campos con la información del QR
+//                 toolNameInput.value = qrData.toolName || "Desconocido";
+//                 toolTypeInput.value = qrData.toolType || "Desconocido";
+//                 toolStatusInput.value = qrData.toolStatus || "Desconocido";
 
-                // Rellenar la fecha y la hora actuales
-                const now = new Date();
-                dateInput.value = now.toLocaleDateString();
-                timeInput.value = now.toLocaleTimeString();
+//                 // Rellenar la fecha y la hora actuales
+//                 const now = new Date();
+//                 dateInput.value = now.toLocaleDateString();
+//                 timeInput.value = now.toLocaleTimeString();
 
-            } else {
-                requestAnimationFrame(scanQRCode); // Continuar escaneando si no se ha detectado
-            }
-        }
+//             } else {
+//                 requestAnimationFrame(scanQRCode); // Continuar escaneando si no se ha detectado
+//             }
+//         }
 
-        document.getElementById("startScan").addEventListener("click", function() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            scanQRCode();
-        });
+//         document.getElementById("startScan").addEventListener("click", function() {
+//             canvas.width = video.videoWidth;
+//             canvas.height = video.videoHeight;
+//             scanQRCode();
+//         });
 
-        startCamera();
+//         startCamera();
 
-        document.getElementById("submitForm").addEventListener("click", function() {
-    const formData = {
-        toolName: toolNameInput.value,
-        toolType: toolTypeInput.value,
-        toolStatus: toolStatusInput.value,
-        date: dateInput.value,
-        time: timeInput.value,
-        nombre: document.getElementById('nombre').value,
-        email: document.getElementById('email').value,
-        nie: document.getElementById('nie').value,
-        especialidad: document.getElementById('especialidad').value,
-        ano: document.getElementById('ano').value
-    };
+//         document.getElementById("submitForm").addEventListener("click", function() {
+//     const formData = {
+//         toolName: toolNameInput.value,
+//         toolType: toolTypeInput.value,
+//         toolStatus: toolStatusInput.value,
+//         date: dateInput.value,
+//         time: timeInput.value,
+//         nombre: document.getElementById('nombre').value,
+//         email: document.getElementById('email').value,
+//         nie: document.getElementById('nie').value,
+//         especialidad: document.getElementById('especialidad').value,
+//         ano: document.getElementById('ano').value
+//     };
 
-    // Enviar datos al endpoint de préstamos
-    fetch('http://localhost:3000/taller', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log('Datos enviados:', data);
+//     // Enviar datos al endpoint de préstamos
+//     fetch('http://localhost:3000/taller', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(formData),
+//     })
+//     .then(response => response.text())
+//     .then(data => {
+//         console.log('Datos enviados:', data);
 
-        // Guardar datos en el sessionStorage
-        sessionStorage.setItem('returnToolName', formData.toolName);
-        sessionStorage.setItem('returnToolType', formData.toolType);
-        sessionStorage.setItem('returnToolStatus', formData.toolStatus);
-        sessionStorage.setItem('returnDate', formData.date);
-        sessionStorage.setItem('returnTime', formData.time);
-        sessionStorage.setItem('returnNombre', formData.nombre);
-        sessionStorage.setItem('returnEmail', formData.email);
-        sessionStorage.setItem('returnNie', formData.nie);
-        sessionStorage.setItem('returnEspecialidad', formData.especialidad);
-        sessionStorage.setItem('returnAno', formData.ano);
+//         // Guardar datos en el sessionStorage
+//         sessionStorage.setItem('returnToolName', formData.toolName);
+//         sessionStorage.setItem('returnToolType', formData.toolType);
+//         sessionStorage.setItem('returnToolStatus', formData.toolStatus);
+//         sessionStorage.setItem('returnDate', formData.date);
+//         sessionStorage.setItem('returnTime', formData.time);
+//         sessionStorage.setItem('returnNombre', formData.nombre);
+//         sessionStorage.setItem('returnEmail', formData.email);
+//         sessionStorage.setItem('returnNie', formData.nie);
+//         sessionStorage.setItem('returnEspecialidad', formData.especialidad);
+//         sessionStorage.setItem('returnAno', formData.ano);
 
-        // Redirigir a la vista de devoluciones
-        window.location.href = '/returns';
-    })
-    .catch((error) => {
-        console.error('Error al enviar los datos:', error);
-    });
-});
+//         // Redirigir a la vista de devoluciones
+//         window.location.href = '/returns';
+//     })
+//     .catch((error) => {
+//         console.error('Error al enviar los datos:', error);
+//     });
+// });
 
 
 
            
     </script>
+
+  
+        <script>
+        $(document).ready(function() {
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
+            let scanning = false;
+
+            // Función para iniciar el escaneo
+            function startScanning() {
+                html5QrCode.start(
+                    { facingMode: "environment" }, // Usar cámara trasera
+                    qrConfig,
+                    onScanSuccess,
+                    onScanError
+                ).then(() => {
+                    scanning = true;
+                    $('#start-button').hide();
+                    $('#stop-button').show();
+                }).catch((err) => {
+                    alert('Error al iniciar la cámara: ' + err);
+                });
+            }
+
+            // Función para detener el escaneo
+            function stopScanning() {
+                html5QrCode.stop().then(() => {
+                    scanning = false;
+                    $('#start-button').show();
+                    $('#stop-button').hide();
+                }).catch((err) => {
+                    alert('Error al detener la cámara: ' + err);
+                });
+            }
+
+            // Función que se ejecuta cuando se detecta un QR exitosamente
+            function onScanSuccess(decodedText, decodedResult) {
+                // Mostrar alerta con el resultado
+              
+                $('#toolName').val(decodedText)
+                stopScanning();
+
+                $.ajax({
+                url: '/taller/buscarHerra?toolName='+decodedText,
+                type: 'GET',
+                success: function(data) {
+                // La petición fue exitosa
+                console.log(data)
+                $('#id').val(data.id)
+                $('#toolType').val(data.nombre_tipo)
+                $('#toolStatus').val(data.estado)
+                
+
+                },
+                error: function(xhr, status, error) {
+                // Hubo un error en la petición
+                console.error(xhr.statusText);
+                }
+            });
+                
+               
+            }
+
+            // Función que se ejecuta cuando hay un error en el escaneo
+            function onScanError(err) {
+                // console.warn(`Error de escaneo: ${err}`);
+            }
+
+            // Evento click para el botón de inicio
+            $('#start-button').click(function() {
+                startScanning();
+            });
+
+            // Evento click para el botón de detener
+            $('#stop-button').click(function() {
+                stopScanning();
+            });
+        });
+    </script>
+   
+    <style>
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #reader {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .scan-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .scan-button:hover {
+            background-color: #0056b3;
+        }
+        #qr-result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
 </body>
 </html>

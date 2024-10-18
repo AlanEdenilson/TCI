@@ -15,7 +15,17 @@ router.get('/perfil',(req,res)=>[
     res.render('profile')
 ])
 
-router.post('/perfil',controll.insertperfil)
+router.post('/perfil',controll.insertperfil);
+
+router.get('/prestamo',(req,res)=>[
+    res.render('loans')
+])
+
+router.get('/buscarestudiante',controll.buscarEstudent_p)
+
+router.get('/buscarHerra',controll.buscarTool)
+
+router.post('/insertarPresta',controll.insertar_presta)
 
 
 module.exports=router;

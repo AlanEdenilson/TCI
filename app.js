@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 // Rutas
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const tallerRouter = require('./routes/taller');
  // Asegúrate de que la ruta sea correcta
 
 const app = express();
@@ -49,6 +50,7 @@ app.use(session({
 // Usar las rutas
 app.use('/', indexRouter);
 app.use('/users', usersRouter); 
+app.use('/taller', tallerRouter); 
 // Asegúrate de que los datos del usuario se carguen antes de llegar a la ruta de préstamos
 
 // Ruta de perfil

@@ -31,18 +31,18 @@
             <span>📷</span>
         </label>
     </div>
-    <form id="profileForm" action="/users/perfil" method="POST">
+    <form id="profileForm" action="/taller/perfil" method="POST">
         <h1>Perfil</h1>
     
         <div class="form-group">
-            <label for="name">Nombre Completo:</label>
-            <input type="text" id="name" name="nombre" required disabled>
+            <label for="name">Apellido:</label>
+            <input type="text" id="name" name="apellido" required disabled>
         </div>
     
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="gmail">Gmail:</label>
             <input type="email" id="gmail" name="email" required disabled>
-        </div>
+        </div> -->
     
         <div class="form-group">
             <label for="nie">NIE:</label>
@@ -82,7 +82,7 @@
         function enableEdit() {
             // Habilitar los campos para edición
             document.getElementById("name").disabled = false;
-            document.getElementById("gmail").disabled = false;
+            // document.getElementById("gmail").disabled = false;
             document.getElementById("nie").disabled = false;
             document.getElementById("specialty").disabled = false;
             document.getElementById("year").disabled = false;
@@ -97,14 +97,14 @@
         document.getElementById("profileForm").onsubmit = function() {
             // Habilitar los campos para que sus valores se envíen
             document.getElementById("name").disabled = false;
-            document.getElementById("gmail").disabled = false;
+            // document.getElementById("gmail").disabled = false;
             document.getElementById("nie").disabled = false;
             document.getElementById("specialty").disabled = false;
             document.getElementById("year").disabled = false;
 
             // Almacenar los datos en sessionStorage antes de enviar el formulario
             sessionStorage.setItem('nombre', document.getElementById("name").value);
-            sessionStorage.setItem('email', document.getElementById("gmail").value);
+            // sessionStorage.setItem('email', document.getElementById("gmail").value);
             sessionStorage.setItem('nie', document.getElementById("nie").value);
             sessionStorage.setItem('especialidad', document.getElementById("specialty").value);
             sessionStorage.setItem('ano', document.getElementById("year").value);
@@ -113,7 +113,7 @@
         window.onload = function() {
             // Deshabilitar los campos al cargar la página
             document.getElementById("name").disabled = true;
-            document.getElementById("gmail").disabled = true;
+            // document.getElementById("gmail").disabled = true;
             document.getElementById("nie").disabled = true;
             document.getElementById("specialty").disabled = true;
             document.getElementById("year").disabled = true;

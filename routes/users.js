@@ -4,7 +4,7 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql2');
 const multer = require('multer'); // Si usas multer, asegúrate de configurarlo correctamente
-const axios = require('axios');  // Importa axios para realizar la solicitud HTTP
+  // Importa axios para realizar la solicitud HTTP
 
 // Ruta para manejar el registro de usuario
 router.post('/register', async (req, res) => {

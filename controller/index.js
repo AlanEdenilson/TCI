@@ -173,7 +173,7 @@ module.exports={
 
         FROM  prestamos p 
         LEFT JOIN herramientas h ON h.id = p.herramienta_id
-        WHERE p.perfil_estudiante_id = ?
+        WHERE p.perfil_estudiante_id = ? 
         `
         const [rows] = await pool.query(query,[id]);
           console.log(rows);

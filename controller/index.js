@@ -150,6 +150,16 @@ module.exports={
     },
     devolver:async function(req,res) {
         console.log(req.body)
+        try {
+          var query = `UPDATE devolucion SET observaciones=?, estado_entrega ='entregado' WHERE prestamo_id=? AND estado_entrega = 'pendiente'`
+          const [row] = await pool.query(query,[req.body.returnComentario,req.body.prestamo]);
+          console.log(row[0]);
+          res.redirect('/taller/principal')
+          
+        } catch (error) {
+          console.error(error)
+          
+        }
    
         
     },
@@ -158,21 +168,23 @@ module.exports={
       try {
         const query =`
          SELECT 
-        h.nombre AS nombre_herramienta,
-        p.id
+         h.nombre AS nombre_herramienta,
+         p.id
 
         FROM  prestamos p 
-        INNER JOIN herramientas h ON h.id = p.herramienta_id
+        LEFT JOIN herramientas h ON h.id = p.herramienta_id
         WHERE p.perfil_estudiante_id = ?
         `
         const [rows] = await pool.query(query,[id]);
-          console.log(rows[0]);
-          res.send(rows[0])
+          console.log(rows);
+          res.send(rows)
 
       } catch (error) {
         
         console.error(error)
       }
-    }
+    },
+    
+
 
 }

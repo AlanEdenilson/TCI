@@ -23,11 +23,9 @@
     </header>
     <form id="returnForm" action="/taller/devolver" method="post">
         <label for="returnToolName">Nombre de la herramienta:</label>
-        <select class="custom-select" name="prestamo" required>
+        <select id="prestamo" class="custom-select" name="prestamo" required>
             <option value="" disabled selected></option>
-            <option value="1">Opción 1</option>
-            <option value="2">Opción 2</option>
-            <option value="3">Opción 3</option>
+            
         </select>
 
  
@@ -49,7 +47,16 @@
                 success: function(data) {
                 // La petición fue exitosa
                 console.log(data)
-                $('#returnNie').val(data.nie)
+                $('#prestamo').empty();
+        
+        // Agregamos la opción por defecto
+        $('#prestamo').append('<option value="" disabled selected>Seleccione</option>');
+        
+        // Iteramos sobre los datos recibidos y creamos las opciones
+        data.forEach(function(item,index) {
+            $('#prestamo').append(`<option value="${item.id}">${index+1})  ${item.nombre_herramienta}</option>`);
+        });
+                
                 
 
                 },

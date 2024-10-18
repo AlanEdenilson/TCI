@@ -27,5 +27,12 @@ router.get('/buscarHerra',controll.buscarTool)
 
 router.post('/insertarPresta',controll.insertar_presta)
 
+router.get('/returns',(req,res)=>{
+    res.render('returns')
+
+})
+
+router.post('/devolver',controll.devolver)
+
 
 module.exports=router;

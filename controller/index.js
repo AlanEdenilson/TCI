@@ -124,6 +124,33 @@ module.exports={
     },
     insertar_presta: async function (req,res) {
         console.log(req.body)
+        var {id} = req.cookies.username
+        console.log('id del estudiante : '+id)
+
+        try {
+          const query =`SELECT id FROM herramientas WHERE nombre = ?`
+          const [rows] = await pool.query(query,[req.body.toolName]);
+            console.log(rows[0].id);
+
+          const query1= `INSERT INTO prestamos (perfil_estudiante_id, herramienta_id, estado) 
+          VALUES (${id},${rows[0].id},'${req.body.toolStatus}')`
+          const result = await pool.query(query1);
+            console.log(result[0]);
+
+          const query2 =`INSERT INTO devolucion (prestamo_id,estado_entrega) 
+          VALUES (?,?)`
+          const result2 = await pool.query(query2,[result[0].insertId,'pendiente']);
+          console.log(result2[0]);
+
+          res.redirect('/taller/principal')
+        } catch (error) {
+          
+          console.error(error)
+        }
+    },
+    devolver:async function(req,res) {
+        console.log(req.body)
+   
         
     }
 

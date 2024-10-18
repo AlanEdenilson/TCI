@@ -21,78 +21,72 @@
             </ul>
         </nav>
     </header>
-    <form id="returnForm">
+    <form id="returnForm" action="/taller/devolver" method="post">
         <label for="returnToolName">Nombre de la herramienta:</label>
-        <input type="text" id="returnToolName" name="returnToolName" readonly><br><br>
-        <label for="returnToolType">Tipo de herramienta:</label>
-        <input type="text" id="returnToolType" name="returnToolType" readonly><br><br>
-        <label for="returnToolStatus">Estado de la herramienta:</label>
-        <input type="text" id="returnToolStatus" name="returnToolStatus" readonly><br><br>
-        <label for="returnDate">Fecha:</label>
-        <input type="text" id="returnDate" name="returnDate" readonly><br><br>
-        <label for="returnTime">Hora:</label>
-        <input type="text" id="returnTime" name="returnTime" readonly><br><br>
-        <label for="returnNombre">Nombre Completo:</label>
-        <input type="text" id="returnNombre" name="returnNombre" readonly><br><br>
-        <label for="returnEmail">Gmail:</label>
-        <input type="email" id="returnEmail" name="returnEmail" readonly><br><br>
+        <select class="custom-select" name="prestamo" required>
+            <option value="" disabled selected></option>
+            <option value="1">Opción 1</option>
+            <option value="2">Opción 2</option>
+            <option value="3">Opción 3</option>
+        </select>
+
+ 
         <label for="returnNie">NIE:</label>
-        <input type="text" id="returnNie" name="returnNie" readonly><br><br>
-        <label for="returnEspecialidad">Especialidad:</label>
-        <input type="text" id="returnEspecialidad" name="returnEspecialidad" readonly><br><br>
-        <label for="returnAno">Año de Bachillerato:</label>
-        <input type="text" id="returnAno" name="returnAno" readonly><br><br>
+       
+        <input type="number" id="returnNie" name="returnNie" ><br><br>
+        
+
         <label for="returnComentario">Comentario/Reporte:</label>
         <textarea id="returnComentario" name="returnComentario" rows="5" cols="33"></textarea><br><br>
-        <input type="button" value="Enviar datos de devolución" id="submitReturnForm">
+        <button type="submit" value="Enviar datos de devolución" id="submitReturnForm"> Enviar</button>
     </form>
     <script>
 
-window.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('returnToolName').value = sessionStorage.getItem('returnToolName') || '';
-    document.getElementById('returnToolType').value = sessionStorage.getItem('returnToolType') || '';
-    document.getElementById('returnToolStatus').value = sessionStorage.getItem('returnToolStatus') || '';
-    document.getElementById('returnDate').value = sessionStorage.getItem('returnDate') || '';
-    document.getElementById('returnTime').value = sessionStorage.getItem('returnTime') || '';
-    document.getElementById('returnNombre').value = sessionStorage.getItem('nombre') || '';
-    document.getElementById('returnEmail').value = sessionStorage.getItem('email') || '';
-    document.getElementById('returnNie').value = sessionStorage.getItem('nie') || '';
-    document.getElementById('returnEspecialidad').value = sessionStorage.getItem('especialidad') || '';
-    document.getElementById('returnAno').value = sessionStorage.getItem('ano') || '';
-    document.getElementById('returnComentario').value = sessionStorage.getItem('returnComentario') || '';
-});
+// window.addEventListener('DOMContentLoaded', function() {
+//     document.getElementById('returnToolName').value = sessionStorage.getItem('returnToolName') || '';
+//     document.getElementById('returnToolType').value = sessionStorage.getItem('returnToolType') || '';
+//     document.getElementById('returnToolStatus').value = sessionStorage.getItem('returnToolStatus') || '';
+//     document.getElementById('returnDate').value = sessionStorage.getItem('returnDate') || '';
+//     document.getElementById('returnTime').value = sessionStorage.getItem('returnTime') || '';
+//     document.getElementById('returnNombre').value = sessionStorage.getItem('nombre') || '';
+//     document.getElementById('returnEmail').value = sessionStorage.getItem('email') || '';
+//     document.getElementById('returnNie').value = sessionStorage.getItem('nie') || '';
+//     document.getElementById('returnEspecialidad').value = sessionStorage.getItem('especialidad') || '';
+//     document.getElementById('returnAno').value = sessionStorage.getItem('ano') || '';
+//     document.getElementById('returnComentario').value = sessionStorage.getItem('returnComentario') || '';
+// });
 
-document.getElementById('submitReturnForm').addEventListener('click', function() {
-    const returnData = {
-        toolName: document.getElementById('returnToolName').value,
-        toolType: document.getElementById('returnToolType').value,
-        toolStatus: document.getElementById('returnToolStatus').value,
-        date: document.getElementById('returnDate').value,
-        time: document.getElementById('returnTime').value,
-        nombre: document.getElementById('returnNombre').value,
-        email: document.getElementById('returnEmail').value,
-        nie: document.getElementById('returnNie').value,
-        especialidad: document.getElementById('returnEspecialidad').value,
-        ano: document.getElementById('returnAno').value,
-        comentario: document.getElementById('returnComentario').value // Añadir el comentario al envío
-    };
+// document.getElementById('submitReturnForm').addEventListener('click', function() {
+//     const returnData = {
+//         toolName: document.getElementById('returnToolName').value,
+//         toolType: document.getElementById('returnToolType').value,
+//         toolStatus: document.getElementById('returnToolStatus').value,
+//         date: document.getElementById('returnDate').value,
+//         time: document.getElementById('returnTime').value,
+//         nombre: document.getElementById('returnNombre').value,
+//         email: document.getElementById('returnEmail').value,
+//         nie: document.getElementById('returnNie').value,
+//         especialidad: document.getElementById('returnEspecialidad').value,
+//         ano: document.getElementById('returnAno').value,
+//         comentario: document.getElementById('returnComentario').value // Añadir el comentario al envío
+//     };
 
-    // Enviar los datos del formulario de devolución
-    fetch('http://localhost:3000/taller', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(returnData),
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log('Datos de devolución enviados:', data);
-    })
-    .catch((error) => {
-        console.error('Error al enviar los datos de devolución:', error);
-    });
-});
+//     // Enviar los datos del formulario de devolución
+//     fetch('http://localhost:3000/taller', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(returnData),
+//     })
+//     .then(response => response.text())
+//     .then(data => {
+//         console.log('Datos de devolución enviados:', data);
+//     })
+//     .catch((error) => {
+//         console.error('Error al enviar los datos de devolución:', error);
+//     });
+// });
 
     
     </script>

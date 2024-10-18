@@ -37,4 +37,13 @@ router.post('/devolver',controll.devolver)
 router.get('/buscarprestamos',controll.buscarprestamos )
 
 
+router.get('/recuperar',(req,res)=>{
+    res.render('cambiarcontrseña')
+})
+
+router.post('/cambiar',controll.cambiarcontraseña)
+
+router.get('/iniciar',(req,res)=>{res.render('index')})
+
+
 module.exports=router;

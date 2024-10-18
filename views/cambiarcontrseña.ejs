@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: none;
+        }
+        button[type="submit"]:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .success-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .success-message.show {
+            opacity: 1;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input, button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recuperar Contraseña</h1>
+        <form id="password-recovery-form">
+            <div class="input-group">
+                <input type="text" id="nie" placeholder="NIE (Número de Identidad de Extranjero)" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Nueva contraseña" required>
+                <i class="toggle-password fas fa-eye" data-target="password"></i>
+            </div>
+            <div class="input-group">
+                <input type="password" id="confirm-password" placeholder="Confirmar contraseña" required>
+                <i class="toggle-password fas fa-eye" data-target="confirm-password"></i>
+            </div>
+            <div class="error-message" id="error-message">Las contraseñas no coinciden</div>
+            <button type="submit">Cambiar Contraseña</button>
+        </form>
+        <div class="success-message" id="success-message">Contraseña cambiada con éxito</div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Mostrar/ocultar contraseña
+            $('.toggle-password').click(function() {
+                const targetId = $(this).data('target');
+                const input = $('#' + targetId);
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+                } else {
+                    input.attr('type', 'password');
+                    $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+            });
+
+            // Validación en tiempo real
+            $('#password, #confirm-password').on('input', function() {
+                const password = $('#password').val();
+                const confirmPassword = $('#confirm-password').val();
+
+                if (password === confirmPassword) {
+                    $('#error-message').hide();
+                    $('button[type="submit"]').prop('disabled', false);
+                } else {
+                    $('#error-message').show();
+                    $('button[type="submit"]').prop('disabled', true);
+                }
+            });
+
+            // Validar formulario al enviar
+            $('#password-recovery-form').submit(function(e) {
+                e.preventDefault();
+                const nie =$('#nie').val()
+                const password = $('#password').val();
+                const confirmPassword = $('#confirm-password').val();
+
+                if (password === confirmPassword) {
+
+                $.ajax({
+                    url: '/taller/cambiar',
+                    type: 'POST',
+                    data: {
+                    nie:nie,
+                        contraseña: password
+                    },
+                    success: function(data){
+                        console.log(data)
+                        if (data) {
+                            setTimeout(function() {
+                           $('#success-message').addClass('show');
+                          setTimeout(function() {
+                            $('#success-message').removeClass('show');
+                            window.location.href='/'
+                        }, 3000);
+                    }, 2000);
+                            
+                    } else {
+                           alert('no se encontro el uso con el nie proporcionado') 
+                            window.location.href='/'
+                        }
+                        
+                                
+                    },
+                    error: function(error){
+                        console.log(error)
+                    }
+        });
+
+                    
+
+
+                    // Simular envío del formulario
+                    // setTimeout(function() {
+                    //     $('#success-message').addClass('show');
+                    //     setTimeout(function() {
+                    //         $('#success-message').removeClass('show');
+                    //     }, 3000);
+                    // }, 2000);
+                } else {
+                    $('#error-message').show();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

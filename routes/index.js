@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
 });
 
 // Ruta para mostrar el formulario de registro

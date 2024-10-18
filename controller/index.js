@@ -169,11 +169,15 @@ module.exports={
         const query =`
          SELECT 
          h.nombre AS nombre_herramienta,
-         p.id
+         p.id,
+         d.estado_entrega
 
-        FROM  prestamos p 
-        LEFT JOIN herramientas h ON h.id = p.herramienta_id
-        WHERE p.perfil_estudiante_id = ? 
+          
+          FROM devolucion d
+          INNER JOIN prestamos p ON d.prestamo_id = p.id
+          INNER JOIN herramientas h ON p.herramienta_id = h.id
+
+          WHERE d.estado_entrega = 'pendiente' AND p.perfil_estudiante_id = ? 
         `
         const [rows] = await pool.query(query,[id]);
           console.log(rows);
@@ -184,6 +188,29 @@ module.exports={
         console.error(error)
       }
     },
+
+    cambiarcontraseña:async function (req,res){
+      const {nie, contraseña}=req.body
+      console.log(req.body)
+
+      try {
+        const consulta = 'UPDATE perfil_estudiante SET contraseña = ? WHERE nie = ?';
+        const [resultado] = await pool.query(consulta, [contraseña, nie]);
+        if (resultado.affectedRows > 0) {
+          res.send(true)
+      } else {
+          res.send(false)
+      }
+        
+      } catch (error) {
+        console.error('Error al actualizar la contraseña:', error);
+        throw error;
+
+      }
+
+     
+      
+    }
     
 
 
